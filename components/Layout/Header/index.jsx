@@ -12,6 +12,7 @@ import ContactModal from "../../ContactModal";
 
 const Header = () => {
     const router = useRouter()
+    const { courseId, lessonId } = router.query
     const { locale, locales, defaultLocale } = router
     const t = translations[locale || defaultLocale]
     const [openMenu, setOpenMenu] = React.useState(false);
@@ -49,6 +50,10 @@ const Header = () => {
         });
     }
 
+    // React.useEffect(() => {
+    //     console.log(courseId, lessonId)
+    // }, [courseId, lessonId])
+
     React.useEffect(() => {
         const auth = getAuth(app);
         onAuthStateChanged(auth, (user) => {
@@ -71,7 +76,16 @@ const Header = () => {
         <>
 
             <nav className="p-2 w-full top-0 left-0 z-40">
-                <div className="container flex flex-wrap items-center justify-between mx-auto">
+                <div className="relative container flex flex-wrap items-center justify-between mx-auto">
+                    {(courseId || lessonId) && 
+                        <>
+                            <button className="flex items-center" onClick={() => Router.back()}>
+                                <svg className="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                                </svg>
+                            </button>
+                        </>
+                    }
                     <Link href="/" className="flex items-center">
                         <img src="/assets/img/logo.svg" className="h-16 mr-3 sm:h-24" alt={t.navbar.title} />
                     </Link>
@@ -84,7 +98,7 @@ const Header = () => {
                             <svg className="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd"></path></svg>
                         </button>
                     </div>
-                    <div className={`w-full md:block md:w-auto ${openMenu ? 'block' : 'hidden'}`} id="navbar-dropdown">
+                    <div className={`absolute inset-0 top-14 md:relative md:top-0 w-full md:block md:w-auto ${openMenu ? 'block' : 'hidden'}`} id="navbar-dropdown">
                         <ul className="flex flex-col p-4 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
                             <li className="hidden md:flex text-white">
                                 <LanguageSwitcher />
@@ -118,7 +132,7 @@ const Header = () => {
                                         <li>
                                             <div className="block cursor-pointer py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent" onClick={goToAdmin}>Admin</div>
                                         </li>
-                                        )}
+                                    )}
                                     <li>
                                         <div className="block cursor-pointer py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-white dark:bg-blue-600 md:dark:bg-transparent" onClick={logout}>{t.navbar.logout}</div>
                                     </li>
