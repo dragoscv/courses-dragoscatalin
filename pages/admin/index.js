@@ -2,7 +2,7 @@ import React from 'react';
 import AddCoursesModal from '../../components/admin/AddCoursesModal';
 import Router from 'next/router';
 import { getAuth, signInAnonymously, onAuthStateChanged } from "firebase/auth";
-import { getFirestore, addDoc, setDoc, doc, collection, getDoc, getDocs, deleteDoc, orderBy } from "firebase/firestore";
+import { getFirestore, addDoc, setDoc, doc, collection, getDoc, getDocs, deleteDoc, orderBy, onSnapshot, query } from "firebase/firestore";
 import { app } from '../../firebase.config';
 
 const auth = getAuth(app);
@@ -43,17 +43,17 @@ const Admin = () => {
     }, []);
 
     React.useEffect(() => {
-        const getCourses = async () => {
-            const courses = [];
-            const querySnapshot = await getDocs(collection(db, "courses"),orderBy('createdAt', 'asc'));
+        const courses = [];
+        const q = query(collection(db, "courses"));
+        onSnapshot(q, (querySnapshot) => {
             querySnapshot.forEach((doc) => {
                 const data = doc.data();
                 data.id = doc.id;
                 courses.push(data);
             });
             setCourses(courses);
-        };
-        getCourses();
+        });
+
     }, []);
 
     return (
@@ -70,7 +70,6 @@ const Admin = () => {
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 {courses.map((course) => (
                     <div key={course.id} className="cursor-pointer overflow-hidden transition-all transform bg-white rounded-lg shadow-sm dark:bg-gray-800 hover:scale-105 w-full"
-                        
                     >
                         <img className="object-cover w-full h-56" src={course.image} alt="" onClick={() => Router.push(`/admin/${course.id}`)} />
                         <div className="p-4">
@@ -88,7 +87,7 @@ const Admin = () => {
                                     <path fillRule="evenodd" d="M3 8a1 1 0 011-1h12a1 1 0 011 1v9a2 2 0 01-2 2H5a2 2 0 01-2-2V8zm1 0v9a1 1 0 001 1h10a1 1 0 001-1V8H4z" clipRule="evenodd" />
                                 </svg>
                             </button>
-                            <button type="button" class="absolute bottom-0 right-0 p-2 m-2 text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 shadow-lg shadow-red-500/50 dark:shadow-lg dark:shadow-red-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+                            <button type="button" className="absolute bottom-0 right-0 p-2 m-2 text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 shadow-lg shadow-red-500/50 dark:shadow-lg dark:shadow-red-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
 
                                 onClick={() => deleteCourse(course)}
                             >

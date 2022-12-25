@@ -47,7 +47,7 @@ const AddLessonModal = (props) => {
             .then((docRef) => {
                 console.log("Document written with ID: ", docRef.id);
                 if (video && docRef.id) {
-                    const imageRef = ref(storage, `courses/${docRef.id}/videos/${video.name}`);
+                    const imageRef = ref(storage, `courses/${props.courseId}/videos/${video.name}`);
                     const uploadTask = uploadBytesResumable(imageRef, video);
 
                     uploadTask.on('state_changed',
