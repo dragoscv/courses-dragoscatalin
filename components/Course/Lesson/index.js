@@ -151,8 +151,7 @@ const Lesson = () => {
                         <div className='player-wrapper'>
                             <ReactPlayer
                                 ref={player}
-                                width="100%"
-                                height="100%"
+                                width="300px"
                                 playing={playing}
                                 controls={controls}
                                 light={light}
