@@ -4,6 +4,7 @@ import { getFirestore, addDoc, setDoc, doc, collection, getDoc, getDocs, query, 
 import { app } from '../../../firebase.config';
 import ReactPlayer from 'react-player'
 import moment from 'moment/moment';
+import screenfull from 'screenfull';
 
 const db = getFirestore(app)
 
@@ -23,6 +24,7 @@ const Lesson = () => {
     const [playbackRate, setPlaybackRate] = React.useState(1.0)
     const [pip, setPip] = React.useState(false)
     const [light, setLight] = React.useState(false)
+    const [seeking, setSeeking] = React.useState(false)
     const player = React.useRef(null)
 
     const handlePlayPause = () => {
@@ -30,14 +32,12 @@ const Lesson = () => {
     }
 
     const handleStop = () => {
-        setUrl(null)
         setPlayed(0)
         setLoaded(0)
         setPlaying(false)
     }
 
     const handleToggleControls = () => {
-        setUrl(null)
         setControls(!controls)
     }
 
@@ -175,34 +175,49 @@ const Lesson = () => {
                                 url={[{ src: lesson.video, type: 'video/webm' }]}
                             />
                         </div>
-                        <div className='player-controls'>
-                            <button onClick={handlePlayPause}>{playing ? 'Pause' : 'Play'}</button>
-                            <button onClick={handleStop}>Stop</button>
-                            <button onClick={handleToggleControls}>Toggle Controls</button>
-                            <button onClick={handleToggleLight}>Toggle Light</button>
-                            <button onClick={handleToggleLoop}>Toggle Loop</button>
-                            <button onClick={handleToggleMuted}>{muted ? 'Unmute' : 'Mute'}</button>
-                            <button onClick={handleTogglePIP}>{pip ? 'Disable PiP' : 'Enable PiP'}</button>
-                            <button onClick={handleToggleFullscreen}>Toggle Fullscreen</button>
-                            <input
-                                type='range' min={0} max={0.999999} step='any'
-                                value={played}
-                                onMouseDown={handleSeekMouseDown}
-                                onChange={handleSeekChange}
-                                onMouseUp={handleSeekMouseUp}
-                            />
-                            <input
-                                type='range' min={0} max={1} step='any'
-                                value={volume}
-                                onChange={handleVolumeChange}
-                            />
-                            <input
-                                type='range' min={0.5} max={2} step='any'
-                                value={playbackRate}
-                                onChange={handleSetPlaybackRate}
-                            />
+                        <div className='player-controls flex flex-col'>
+                            <div className='flex flex-row w-full'>
+                                <input
+                                    type='range' min={0} max={0.999999} step='any'
+                                    value={played}
+                                    onMouseDown={handleSeekMouseDown}
+                                    onChange={handleSeekChange}
+                                    onMouseUp={handleSeekMouseUp}
+                                    className='w-full'
+                                />
+                            </div>
+                            <div className='flex flex-row justify-between'>
+                                <button onClick={handlePlayPause}>{playing ? 'Pause' : 'Play'}</button>
+                                <button onClick={handleStop}>Stop</button>
+                                <button onClick={handleToggleControls}>Toggle Controls</button>
+                            </div>
+                            <div className='flex flex-row justify-between'>
+                                <button onClick={handleToggleLight}>Toggle Light</button>
+                                <button onClick={handleToggleLoop}>Toggle Loop</button>
+                                <button onClick={handleToggleMuted}>{muted ? 'Unmute' : 'Mute'}</button>
+                            </div>
+                            <div className='flex flex-row justify-between'>
+                                <button onClick={handleTogglePIP}>{pip ? 'Disable PiP' : 'Enable PiP'}</button>
+                                <button onClick={handleToggleFullscreen}>Toggle Fullscreen</button>
+                            </div>
+                            <div className='flex flex-row w-full'>
+                                <label>Volume</label>
+                                <input
+                                    type='range' min={0} max={1} step='any'
+                                    value={volume}
+                                    onChange={handleVolumeChange}
+                                />
+                            </div>
+                            <div className='flex flex-row w-full'>
+                                <label>Playback Rate</label>
+                                <input
+                                    type='range' min={0.5} max={2} step='any'
+                                    value={playbackRate}
+                                    onChange={handleSetPlaybackRate}
+                                />
+                            </div>
                         </div>
-                        
+
                     </>
                 )}
             </div>
