@@ -25,6 +25,9 @@ const Lesson = () => {
     const [pip, setPip] = React.useState(false)
     const [light, setLight] = React.useState(false)
     const [seeking, setSeeking] = React.useState(false)
+    const [videoWidth, setVideoWidth] = React.useState('300px')
+    const [videoHeight, setVideoHeight] = React.useState('200px')
+
     const player = React.useRef(null)
 
     const handlePlayPause = () => {
@@ -122,6 +125,28 @@ const Lesson = () => {
     }
 
     React.useEffect(() => {
+        // video width and height depending on screen size
+        const handleResize = () => {
+            //if window width is less than 768px, set video width to '300px' and height to '200px' else set video width to '100%' and height to '100%'
+            if (window.innerWidth < 768) {
+                setVideoWidth('300px')
+                setVideoHeight('200px')
+            } else {
+                setVideoWidth('600px')
+                setVideoHeight('400px')
+            }
+        }
+        window.addEventListener('resize', handleResize)
+        handleResize()
+        return () => {
+            window.removeEventListener('resize', handleResize)
+        }
+
+    }, [])
+
+
+
+    React.useEffect(() => {
         if (!courseId || !lessonId) return
         const queryLesson = doc(db, `courses/${courseId}/lessons/${lessonId}`)
         getDoc(queryLesson).then((doc) => {
@@ -151,8 +176,8 @@ const Lesson = () => {
                         <div className='player-wrapper py-4'>
                             <ReactPlayer
                                 ref={player}
-                                width="300px"
-                                height="200px"
+                                width={videoWidth}
+                                height={videoHeight}
                                 playing={playing}
                                 controls={controls}
                                 light={light}
