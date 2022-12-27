@@ -83,7 +83,7 @@ const Lessons = (props) => {
 
             <div className="grid grid-cols-2 gap-6 sm:grid-cols-2 lg:grid-cols-6">
                 {lessons.map((lesson) => (
-                    <div key={lesson.id} className="relative flex flex-col items-center justify-center p-6 space-y-4 bg-white rounded-lg shadow-lg dark:bg-gray-700">
+                    <div key={lesson.id} className="relative flex flex-col items-center justify-center p-6 space-y-4 bg-white rounded-lg shadow-lg dark:bg-gray-700 transition-all hover:scale-105">
                         <div className="flex flex-col items-center justify-center space-y-1">
                             {lesson.isFree && (
                                 <span className="absolute top-0 right-0 px-2 py-1 text-xs font-semibold text-white bg-green-500 rounded-sm transform ">Free</span>
