@@ -13,7 +13,7 @@ const Lesson = () => {
     const { courseId, lessonId } = router.query
     const [lesson, setLesson] = React.useState(null)
     //set state for lesson's video controls
-    const [controls, setControls] = React.useState(false)
+    const [controls, setControls] = React.useState(true)
     const [playing, setPlaying] = React.useState(true)
     const [muted, setMuted] = React.useState(false)
     const [volume, setVolume] = React.useState(0.8)
@@ -109,7 +109,7 @@ const Lesson = () => {
 
     const handleEnded = () => {
         console.log('onEnded')
-        setPlaying(loop)
+        setPlaying(false)
     }
 
     const handleDuration = (duration) => {
@@ -118,7 +118,7 @@ const Lesson = () => {
     }
 
     const handleToggleFullscreen = () => {
-        screenfull.toggle(player)
+        screenfull.request(findDOMNode(player))
     }
 
     React.useEffect(() => {
@@ -148,10 +148,11 @@ const Lesson = () => {
                         <h2>{lesson.title}</h2>
                         <p>{lesson.description}</p>
                         <p>{moment(lesson.createdAt.toDate()).format('DD/MM/YYYY')}</p>
-                        <div className='player-wrapper'>
+                        <div className='player-wrapper py-4'>
                             <ReactPlayer
                                 ref={player}
                                 width="300px"
+                                height="200px"
                                 playing={playing}
                                 controls={controls}
                                 light={light}
@@ -191,13 +192,13 @@ const Lesson = () => {
                                 <button onClick={handleToggleControls}>Toggle Controls</button>
                             </div>
                             <div className='flex flex-row justify-between'>
-                                <button onClick={handleToggleLight}>Toggle Light</button>
-                                <button onClick={handleToggleLoop}>Toggle Loop</button>
+                                {/* <button onClick={handleToggleLight}>Toggle Light</button> */}
+                                {/* <button onClick={handleToggleLoop}>Toggle Loop</button> */}
                                 <button onClick={handleToggleMuted}>{muted ? 'Unmute' : 'Mute'}</button>
+                                <button onClick={handleToggleFullscreen}>Toggle Fullscreen</button>
+                                <button onClick={handleTogglePIP}>{pip ? 'Disable PiP' : 'Enable PiP'}</button>
                             </div>
                             <div className='flex flex-row justify-between'>
-                                <button onClick={handleTogglePIP}>{pip ? 'Disable PiP' : 'Enable PiP'}</button>
-                                <button onClick={handleToggleFullscreen}>Toggle Fullscreen</button>
                             </div>
                             <div className='flex flex-row w-full'>
                                 <label>Volume</label>
