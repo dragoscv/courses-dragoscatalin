@@ -118,7 +118,7 @@ const Lesson = () => {
     }
 
     const handleToggleFullscreen = () => {
-        screenfull.request(findDOMNode(player))
+        screenfull.request(player)
     }
 
     React.useEffect(() => {
@@ -175,7 +175,7 @@ const Lesson = () => {
                                 url={[{ src: lesson.video, type: 'video/webm' }]}
                             />
                         </div>
-                        <div className='player-controls flex flex-col'>
+                        <div className='player-controls flex flex-col hidden'>
                             <div className='flex flex-row w-full'>
                                 <input
                                     type='range' min={0} max={0.999999} step='any'
