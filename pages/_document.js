@@ -4,7 +4,7 @@ class MyDocument extends Document {
     render() {
         return (
             <Html
-            // className="scroll-smooth" 
+            className="scroll-smooth dark" 
             // style={{ scrollBehavior: 'smooth' }}
             >
                 <Head />

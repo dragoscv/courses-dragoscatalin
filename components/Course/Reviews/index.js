@@ -145,7 +145,7 @@ const Reviews = () => {
                     <div id="add-review" className="w-full">
                         <div className="w-full mb-4 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
                             <div className="px-4 py-2 bg-white rounded-t-lg dark:bg-gray-800">
-                                <label for="comment" className="sr-only">Your review</label>
+                                <label htmlFor="comment" className="sr-only">Your review</label>
                                 <textarea id="comment" rows="4" className="w-full px-0 text-sm text-gray-900 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400" placeholder="Write a review..." required
                                     value={review}
                                     onChange={(e) => setReview(e.target.value)}
@@ -181,8 +181,8 @@ const Reviews = () => {
                 )}
                 <div id="reviews" className="w-full">
                     {reviews.map((review, index) => (
-                        <>
-                            <article key={review.id} className="py-4 px-2">
+                        <div key={review.id}>
+                            <article className="py-4 px-2">
                                 <div className="flex items-center mb-4 space-x-4">
                                     <img className="w-10 h-10 rounded-full" src={review.avatar} alt="" />
                                     <div className="space-y-1 font-medium dark:text-white">
@@ -223,7 +223,7 @@ const Reviews = () => {
                                 </aside>
                             </article>
                             <hr className="border-gray-200 dark:border-gray-600" />
-                        </>
+                        </div>
                     ))}
                 </div>
             </div>

@@ -59,24 +59,24 @@ const Lesson = () => {
 
     return (
         <>
-            <div className='container'>
+            <div className='container flex flex-col justify-center items-center'>
                 <h1>Lesson</h1>
                 {lesson && (
                     <>
                         <h2>{lesson.title}</h2>
-                        <p>{lesson.description}</p>
-                        <p>{moment(lesson.createdAt.toDate()).format('DD/MM/YYYY')}</p>
                         <div className='player-wrapper py-4'>
                             <video
                                 ref={player}
                                 src={lesson.video}
                                 width={videoWidth}
                                 height={videoHeight}
-                                controls                                
+                                controls
                             />
 
                         </div>
-
+                        <p>{lesson.description}</p>
+                        <p>{moment(lesson.createdAt.toDate()).format('DD/MM/YYYY')}</p>
+                        <div id="lesson-content" dangerouslySetInnerHTML={{ __html: lesson.lessonContent }}></div>
 
                     </>
                 )}

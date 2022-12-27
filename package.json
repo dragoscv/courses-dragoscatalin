@@ -9,21 +9,28 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ckeditor/ckeditor5-build-classic": "^35.4.0",
+    "@ckeditor/ckeditor5-react": "^5.0.5",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@mui/icons-material": "^5.11.0",
     "@mui/material": "^5.11.1",
+    "draft-js": "^0.11.7",
     "eslint": "8.29.0",
     "eslint-config-next": "13.0.6",
     "firebase": "^9.15.0",
     "flowbite": "^1.5.5",
     "flowbite-react": "^0.3.7",
+    "froala-editor": "^4.0.16",
     "moment": "^2.29.4",
     "next": "13.0.6",
     "nextjs-cors": "^2.1.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-draft-wysiwyg": "^1.15.0",
+    "react-froala-wysiwyg": "^4.0.16",
     "react-player": "^2.11.0",
+    "react-simple-wysiwyg": "^2.1.4",
     "screenfull": "^6.0.2"
   },
   "devDependencies": {

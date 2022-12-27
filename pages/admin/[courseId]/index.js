@@ -3,12 +3,15 @@ import Router, { useRouter } from 'next/router'
 import { getFirestore, addDoc, setDoc, doc, collection, getDoc, getDocs, query, onSnapshot, deleteDoc } from "firebase/firestore";
 import { app } from '../../../firebase.config';
 import AddLessonModal from '../../../components/admin/AddLessonModal'
+import EditLessonModal from '../../../components/admin/EditLessonModal'
 import moment from 'moment/moment';
 
 const db = getFirestore(app)
 
 const Course = () => {
     const [addLessonModal, setAddLessonModal] = React.useState(false)
+    const [editLessonModal, setEditLessonModal] = React.useState(false)
+    const [editLessonId, setEditLessonId] = React.useState(null)
     const [lessons, setLessons] = React.useState([])
     const router = useRouter()
     const { courseId } = router.query
@@ -68,7 +71,12 @@ const Course = () => {
                             {lesson.isFree && (
                                 <span className="absolute top-0 left-0 px-2 py-1 text-xs font-semibold text-white bg-green-500 rounded-sm transform ">Free</span>
                             )}
-                            <button className="absolute top-0 right-0 px-2 py-1 text-xs font-semibold text-white bg-blue-500 rounded-sm transform ">Edit</button>
+                            <button className="absolute top-0 right-0 px-2 py-1 text-xs font-semibold text-white bg-blue-500 rounded-sm transform"
+                            onClick={() => {
+                                setEditLessonId(lesson.id)
+                                setEditLessonModal(true)
+                            }}
+                            >Edit</button>
                             <button className="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800"
                                 onClick={() => deleteLesson(lesson)}
                             >Delete</button>
@@ -77,6 +85,7 @@ const Course = () => {
                 ))}
             </div>
             <AddLessonModal open={addLessonModal} onClose={toggleAddLessonModal} courseId={courseId} />
+            <EditLessonModal open={editLessonModal} onClose={setEditLessonModal} lessonId={editLessonId} courseId={courseId} />
         </>
     )
 }

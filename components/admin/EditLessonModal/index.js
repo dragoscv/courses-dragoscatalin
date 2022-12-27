@@ -9,7 +9,8 @@ import { DefaultEditor } from 'react-simple-wysiwyg';
 const db = getFirestore(app);
 const storage = getStorage(app);
 
-const AddLessonModal = (props) => {
+const EditLessonModal = (props) => {
+    const { lessonId, courseId } = props;
     const [open, setOpen] = React.useState(false);
     const [saveButtonText, setSaveButtonText] = React.useState("Save lesson");
     const [title, setTitle] = React.useState("");
@@ -32,7 +33,7 @@ const AddLessonModal = (props) => {
     };
 
 
-    const handleAddLesson = () => {
+    const handleSaveLesson = () => {
         setSaveButtonText("Saving...");
 
         const lesson = {
@@ -43,63 +44,74 @@ const AddLessonModal = (props) => {
             createdAt: new Date(),
         };
 
-        addDoc(collection(db, `courses/${props.courseId}/lessons/`), lesson)
-            .then((docRef) => {
-                console.log("Document written with ID: ", docRef.id);
-                if (video && docRef.id) {
-                    const imageRef = ref(storage, `courses/${props.courseId}/videos/${video.name}`);
-                    const uploadTask = uploadBytesResumable(imageRef, video);
+        setDoc(doc(db, `courses/${props.courseId}/lessons/`, lessonId), lesson, { merge: true })
 
-                    uploadTask.on('state_changed',
-                        (snapshot) => {
-                            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                            console.log('Upload is ' + progress + '% done');
-                            setSaveButtonText(`Saving... ${progress}%`);
-                            switch (snapshot.state) {
-                                case 'paused':
-                                    console.log('Upload is paused');
-                                    break;
-                                case 'running':
-                                    console.log('Upload is running');
-                                    break;
-                            }
-                        },
-                        (error) => {
-                            console.log(error);
-                        },
-                        () => {
-                            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                                console.log('File available at', downloadURL);
-                                setDoc(doc(db, `courses/${props.courseId}/lessons`, docRef.id), { video: downloadURL }, { merge: true }).then(() => {
-                                    console.log("Document successfully updated!");
-                                    setSaveButtonText("Save lesson");
-                                    handleClose();
-                                }).catch((error) => {
-                                    console.error("Error updating document: ", error);
-                                });
-                            });
-                        }
-                    );
+        if (video) {
+            const imageRef = ref(storage, `courses/${props.courseId}/videos/${video.name}`);
+            const uploadTask = uploadBytesResumable(imageRef, video);
+
+            uploadTask.on('state_changed',
+                (snapshot) => {
+                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    console.log('Upload is ' + progress + '% done');
+                    setSaveButtonText(`Saving... ${progress}%`);
+                    switch (snapshot.state) {
+                        case 'paused':
+                            console.log('Upload is paused');
+                            break;
+                        case 'running':
+                            console.log('Upload is running');
+                            break;
+                    }
+                },
+                (error) => {
+                    console.log(error);
+                },
+                () => {
+                    getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                        console.log('File available at', downloadURL);
+                        setDoc(doc(db, `courses/${props.courseId}/lessons`, docRef.id), { video: downloadURL }, { merge: true }).then(() => {
+                            console.log("Document successfully updated!");
+                            setSaveButtonText("Save lesson");
+                            handleClose();
+                        }).catch((error) => {
+                            console.error("Error updating document: ", error);
+                        });
+                    });
                 }
-                else {
-                    setSaveButtonText("Save lesson");
-                    handleClose();
-                }
-            })
-            .catch((error) => {
-                console.error("Error adding document: ", error);
-            }
             );
-
-
+        }
+        else {
+            setSaveButtonText("Save lesson");
+            handleClose();
+        }
     };
+
+    React.useEffect(() => {
+        if (lessonId) {
+            const docRef = doc(db, `courses/${courseId}/lessons`, lessonId);
+            getDoc(docRef).then((doc) => {
+                if (doc.exists()) {
+                    setTitle(doc.data().title);
+                    setDescription(doc.data().description);
+                    setLessonContent(doc.data().lessonContent);
+                    setIsFree(doc.data().isFree);
+                } else {
+                    // doc.data() will be undefined in this case
+                    console.log("No such document!");
+                }
+            }).catch((error) => {
+                console.log("Error getting document:", error);
+            });
+        }
+    }, [lessonId, courseId]);
 
 
 
 
     return (
         <>
-            <div id="add-course-modal" tabIndex="-1" aria-hidden="true" className={`${open ? 'flex' : 'hidden'} overflow-y-auto overflow-x-hidden mx-auto sm:w-full md:w-full fixed inset-0 items-center justify-center z-30 p-4 w-full md:inset-0 h-modal md:h-full`}>
+            <div id="add-course-modal" tabIndex="-1" aria-hidden="true" className={`${open ? 'flex' : 'hidden'} overflow-y-auto overflow-x-hidden mx-auto sm:w-full md:w-full fixed inset-0 items-center justify-center z-30 p-4 w-full md:inset-0 h-modal md:h-full max-h-screen`}>
                 <div className="relative flex justify-center items-center w-full max-w-md h-full md:h-auto">
                     <div className="w-full relative bg-white rounded-lg shadow dark:bg-gray-700">
                         <button type="button" className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white" data-modal-toggle="authentication-modal" onClick={handleClose}>
@@ -107,7 +119,7 @@ const AddLessonModal = (props) => {
                             <span className="sr-only">{t.contactModal.close}</span>
                         </button>
                         <div className="pt-4">
-                            <h2 className="text-center text-2xl font-semibold text-gray-700 dark:text-gray-200 pb-2">Add new lesson</h2>
+                            <h2 className="text-center text-2xl font-semibold text-gray-700 dark:text-gray-200 pb-2">Edit Lesson</h2>
                             <div className="py-0 px-6 lg:px-8 w-full">
                                 <div className="mb-6 w-full">
                                     <label htmlFor="base-input" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Title</label>
@@ -146,7 +158,7 @@ const AddLessonModal = (props) => {
                         </div>
                         <div className="flex justify-center items-center w-full p-6 border-t border-gray-300 dark:border-gray-700">
                             <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                                onClick={handleAddLesson}
+                                onClick={handleSaveLesson}
                             >{saveButtonText}</button>
                         </div>
 
@@ -159,4 +171,4 @@ const AddLessonModal = (props) => {
 
 
 
-export default AddLessonModal;
+export default EditLessonModal;
