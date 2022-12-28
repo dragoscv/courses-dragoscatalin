@@ -1,10 +1,8 @@
-import React from 'react';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { getFirestore, getDocs, collection, query, updateDoc, setDoc, doc, onSnapshot } from 'firebase/firestore';
-import { app } from '../../firebase.config';
+import { collection, getFirestore, onSnapshot, query } from 'firebase/firestore';
 import moment from 'moment';
-import Tooltip from '@mui/material/Tooltip';
-import Settings from './settings';
+import React from 'react';
+import { app } from '../../firebase.config';
 
 const db = getFirestore(app);
 
@@ -13,6 +11,7 @@ const ProfileModal = (props) => {
     const [currentTab, setCurrentTab] = React.useState('purchases');
     const [purchases, setPurchases] = React.useState([]);
     const [user, setUser] = React.useState({});
+    const [courses, setCourses] = React.useState([]);
 
     const handleClose = () => {
         setOpen(false);
@@ -53,10 +52,20 @@ const ProfileModal = (props) => {
         });
     }, [user]);
 
-    const reedemNFT = (transactionId) => {
-        // const transactioRef = doc(db, 'transactions', transactionId);
-        // setDoc(transactioRef, { reedemed: true }, { merge: true });
-    };
+    React.useEffect(() => {
+        const q = query(collection(db, 'courses'));
+        onSnapshot(q, (snapshot) => {
+            const courses = [];
+            snapshot.forEach((doc) => {
+                const data = doc.data();
+                data.courseId = doc.id;
+                courses[data.courseId] = data;
+            });
+            console.log(courses)
+            setCourses(courses);
+        });
+    }, []);
+
 
 
 
@@ -93,15 +102,11 @@ const ProfileModal = (props) => {
                                         <li key={index} className="py-3 sm:py-4 w-full">
                                             <div className="flex items-center space-x-4">
                                                 <div className="flex-shrink-0">
-                                                    {purchase.animal === 'dog' ? (
-                                                        <img className="w-8 h-8 rounded-full" src="/assets/img/dog-profile.svg" alt="dog" />
-                                                    ) : (
-                                                        <img className="w-8 h-8 rounded-full" src="/assets/img/cat-profile.svg" alt="cat" />
-                                                    )}
+                                                    
                                                 </div>
                                                 <div className="flex-1 min-w-0">
                                                     <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
-                                                        {purchase.productType != 'donation' && purchase.quantity + ' x '}{purchase.productType === 'donation' ? 'Donation' : 'NFT'} - {purchase.animal === 'dog' ? 'Dog' : 'Cat'}
+                                                        {courses && courses[purchase.courseId] ? courses[purchase.courseId].title : 'Course not found'}
                                                     </p>
                                                     <p className="text-sm text-gray-500 truncate dark:text-gray-400">
 
@@ -117,56 +122,7 @@ const ProfileModal = (props) => {
                                 </ul>
                             </div>
                         </div>
-                        <div className={`${currentTab === 'nfts' ? 'flex' : 'hidden'} p-4 bg-white rounded-lg md:p-8 dark:bg-gray-800`} id="services" role="tabpanel" aria-labelledby="services-tab">
-                            <div className="flex items-center justify-between w-full">
-                                <ul role="list" className="divide-y divide-gray-200 dark:divide-gray-700 w-full">
-                                    {purchases.map((purchase, index) => (
-                                        purchase.productType != 'donation' && (
-                                            <li key={index} className="py-3 sm:py-4 w-full">
-                                                <div className="flex items-center space-x-4">
-                                                    <div className="flex-shrink-0">
-                                                        {purchase.animal === 'dog' ? (
-                                                            <img className="w-8 h-8 rounded-full" src="/assets/img/dog-profile.svg" alt="dog" />
-                                                        ) : (
-                                                            <img className="w-8 h-8 rounded-full" src="/assets/img/cat-profile.svg" alt="cat" />
-                                                        )}
-                                                    </div>
-                                                    <div className="flex-1 min-w-0">
-                                                        <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
-                                                            {purchase.productType != 'donation' && purchase.quantity + ' x '}{purchase.productType === 'donation' ? 'Donation' : 'NFT'} - {purchase.animal === 'dog' ? 'Dog' : 'Cat'}
-                                                        </p>
-                                                        <p className="text-sm text-gray-500 truncate dark:text-gray-400">
-
-                                                            {moment(purchase.createdAt.toDate()).format('MMMM Do YYYY, h:mm:ss')}
-                                                        </p>
-                                                    </div>
-                                                    <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                                                        {!purchase.reedemed ? (
-                                                            <>
-                                                                <Tooltip title="This will be available soon">
-                                                                    <button data-tooltip-target="tooltip-reedem" className="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-500 to-pink-500 group-hover:from-purple-500 group-hover:to-pink-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800"
-                                                                        onClick={() => reedemNFT(purchase.transactionId)}
-                                                                    >
-
-                                                                        <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-                                                                            Reedem
-                                                                        </span>
-                                                                    </button>
-                                                                </Tooltip>
-                                                            </>
-                                                        ) : (
-                                                            <button type="button" className="py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Reedemed</button>
-                                                        )}
-
-
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        )
-                                    ))}
-                                </ul>
-                            </div>
-                        </div>
+                        
                         <div className={`${currentTab === 'settings' ? 'flex' : 'hidden'} p-4 bg-white rounded-lg md:p-8 dark:bg-gray-800`} id="statistics" role="tabpanel" aria-labelledby="statistics-tab">
                             {/* <Settings /> */}
                         </div>

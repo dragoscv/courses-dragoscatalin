@@ -1,8 +1,9 @@
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { collection, deleteDoc, doc, getFirestore, onSnapshot, query } from "firebase/firestore";
+import Router from 'next/router';
 import React from 'react';
 import AddCoursesModal from '../../components/admin/AddCoursesModal';
-import Router from 'next/router';
-import { getAuth, signInAnonymously, onAuthStateChanged } from "firebase/auth";
-import { getFirestore, addDoc, setDoc, doc, collection, getDoc, getDocs, deleteDoc, orderBy, onSnapshot, query } from "firebase/firestore";
+import EditCourseModal from "../../components/admin/EditCourseModal";
 import { app } from '../../firebase.config';
 
 const auth = getAuth(app);
@@ -10,10 +11,16 @@ const db = getFirestore(app);
 
 const Admin = () => {
     const [addCourseModal, setAddCourseModal] = React.useState(false);
+    const [editCourseModal, setEditCourseModal] = React.useState(false);
     const [courses, setCourses] = React.useState([]);
+    const [courseId, setCourseId] = React.useState(null);
 
     const toggleAddCourseModal = () => {
         setAddCourseModal(!addCourseModal);
+    };
+
+    const toggleEditCourseModal = () => {
+        setEditCourseModal(!editCourseModal);
     };
 
     const editCourse = (course) => {
@@ -46,6 +53,7 @@ const Admin = () => {
         const courses = [];
         const q = query(collection(db, "courses"));
         onSnapshot(q, (querySnapshot) => {
+            courses.length = 0;
             querySnapshot.forEach((doc) => {
                 const data = doc.data();
                 data.id = doc.id;
@@ -80,7 +88,10 @@ const Admin = () => {
                                 {course.description}
                             </p>
                             <button className="absolute top-0 right-0 p-2 m-2 text-gray-400 bg-white rounded-full shadow-sm hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-gray-800 dark:focus:ring-white"
-                                onClick={() => editCourse(course)}
+                                onClick={() => {
+                                    toggleEditCourseModal()
+                                    setCourseId(course.id)
+                                }}
                             >
                                 <svg className="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
                                     <path fillRule="evenodd" d="M4 6a2 2 0 012-2h8a2 2 0 012 2v2a1 1 0 11-2 0V6H6v2a1 1 0 11-2 0V6z" clipRule="evenodd" />
@@ -98,6 +109,7 @@ const Admin = () => {
                 ))}
             </div>
             <AddCoursesModal open={addCourseModal} onClose={toggleAddCourseModal} />
+            <EditCourseModal open={editCourseModal} onClose={toggleEditCourseModal} courseId={courseId} />
         </div>
     );
 }

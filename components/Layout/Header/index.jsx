@@ -114,6 +114,19 @@ const Header = () => {
         Router.push('/admin')
     }
 
+    //hide openMenu when click outside
+    React.useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (!openMenu && event.target.id !== 'navbar-dropdown') {
+                setOpenMenu(false)
+            }
+        }
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [openMenu])
+
 
     return (
         <>
