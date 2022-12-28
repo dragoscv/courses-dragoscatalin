@@ -81,10 +81,14 @@ const EditLessonModal = (props) => {
                 }
             );
         }
-        else {
-            setSaveButtonText("Save lesson");
-            handleClose();
-        }
+        setSaveButtonText("Save lesson");
+        handleClose();
+        setTitle("");
+        setDescription("");
+        setLessonContent("");
+        setVideo(null);
+        setIsFree(false);
+        
     };
 
     React.useEffect(() => {
@@ -149,6 +153,7 @@ const EditLessonModal = (props) => {
                             <div className="py-0 px-6 lg:px-8 w-full">
                                 <label className="inline-flex relative items-center mb-4 cursor-pointer">
                                     <input type="checkbox" value="" className="sr-only peer"
+                                        checked={isFree}
                                         onChange={(e) => setIsFree(e.target.checked)}
                                     />
                                     <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-900 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-800 peer-checked:bg-blue-600"></div>

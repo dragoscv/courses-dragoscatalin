@@ -1,5 +1,5 @@
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { collection, deleteDoc, doc, getFirestore, onSnapshot, query } from "firebase/firestore";
+import { collection, deleteDoc, doc, getFirestore, onSnapshot, query, orderBy } from "firebase/firestore";
 import Router from 'next/router';
 import React from 'react';
 import AddCoursesModal from '../../components/admin/AddCoursesModal';
@@ -51,7 +51,7 @@ const Admin = () => {
 
     React.useEffect(() => {
         const courses = [];
-        const q = query(collection(db, "courses"));
+        const q = query(collection(db, "courses"), orderBy("createdAt", "desc"));
         onSnapshot(q, (querySnapshot) => {
             courses.length = 0;
             querySnapshot.forEach((doc) => {
@@ -75,7 +75,7 @@ const Admin = () => {
                     </span>
                 </button>
             </div>
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 mx-4">
                 {courses.map((course) => (
                     <div key={course.id} className="cursor-pointer overflow-hidden transition-all transform bg-white rounded-lg shadow-sm dark:bg-gray-800 hover:scale-105 w-full"
                     >

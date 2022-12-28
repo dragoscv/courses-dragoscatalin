@@ -83,10 +83,16 @@ const EditCourseModal = (props) => {
                     }
                 );
             }
-            else {
-                setSaveButtonText("Save course");
-                handleClose();
-            }
+            setSaveButtonText("Save course");
+            handleClose();
+            setTitle("");
+            setDescription("");
+            setPrice("");
+            setCurrency("RON");
+            setImage(null);
+            setCategory("");
+            setInstructor("");
+            
         }).catch((error) => {
             console.error("Error adding document: ", error);
         });

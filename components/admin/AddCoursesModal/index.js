@@ -15,7 +15,7 @@ const AddCoursesModal = (props) => {
     const [description, setDescription] = React.useState("");
     const [price, setPrice] = React.useState("");
     const [currency, setCurrency] = React.useState("RON");
-    const [image, setImage] = React.useState("");
+    const [image, setImage] = React.useState(null);
     const [category, setCategory] = React.useState("");
     const [instructor, setInstructor] = React.useState("");
 
@@ -75,8 +75,6 @@ const AddCoursesModal = (props) => {
                                 console.log('File available at', downloadURL);
                                 setDoc(doc(db, "courses", docRef.id), { image: downloadURL }, { merge: true }).then(() => {
                                     console.log("Document successfully updated!");
-                                    setSaveButtonText("Save course");
-                                    handleClose();
                                 }).catch((error) => {
                                     console.error("Error updating document: ", error);
                                 });
@@ -84,6 +82,16 @@ const AddCoursesModal = (props) => {
                         }
                     );
                 }
+                setSaveButtonText("Save course");
+                handleClose();
+                setTitle("");
+                setDescription("");
+                setPrice("");
+                setCurrency("RON");
+                setImage(null);
+                setCategory("");
+                setInstructor("");
+
             })
             .catch((error) => {
                 console.error("Error adding document: ", error);

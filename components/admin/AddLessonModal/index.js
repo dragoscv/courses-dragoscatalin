@@ -72,8 +72,6 @@ const AddLessonModal = (props) => {
                                 console.log('File available at', downloadURL);
                                 setDoc(doc(db, `courses/${props.courseId}/lessons`, docRef.id), { video: downloadURL }, { merge: true }).then(() => {
                                     console.log("Document successfully updated!");
-                                    setSaveButtonText("Save lesson");
-                                    handleClose();
                                 }).catch((error) => {
                                     console.error("Error updating document: ", error);
                                 });
@@ -81,10 +79,14 @@ const AddLessonModal = (props) => {
                         }
                     );
                 }
-                else {
-                    setSaveButtonText("Save lesson");
-                    handleClose();
-                }
+                setSaveButtonText("Save lesson");
+                handleClose();
+                setTitle("");
+                setDescription("");
+                setLessonContent("");
+                setVideo(null);
+                setIsFree(false);
+                
             })
             .catch((error) => {
                 console.error("Error adding document: ", error);

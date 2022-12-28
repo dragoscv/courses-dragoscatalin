@@ -61,7 +61,7 @@ const Course = () => {
                     </span>
                 </button>
             </div>
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 mx-4">
                 {lessons.map((lesson) => (
                     <div key={lesson.id} className="relative flex flex-col items-center justify-center p-6 space-y-4 bg-white rounded-lg shadow-lg dark:bg-gray-800">
                         <div className="flex flex-col items-center justify-center space-y-1">
