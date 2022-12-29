@@ -18,6 +18,7 @@ const AddCoursesModal = (props) => {
     const [image, setImage] = React.useState(null);
     const [category, setCategory] = React.useState("");
     const [instructor, setInstructor] = React.useState("");
+    const [language, setLanguage] = React.useState("ro");
 
     const router = useRouter()
     const { locale, locales, defaultLocale } = router
@@ -43,6 +44,7 @@ const AddCoursesModal = (props) => {
             currency: currency,
             category: category,
             instructor: instructor,
+            language: language,
             createdAt: new Date(),
         };
 
@@ -75,22 +77,34 @@ const AddCoursesModal = (props) => {
                                 console.log('File available at', downloadURL);
                                 setDoc(doc(db, "courses", docRef.id), { image: downloadURL }, { merge: true }).then(() => {
                                     console.log("Document successfully updated!");
+                                    setSaveButtonText("Save course");
+                                    handleClose();
+                                    setTitle("");
+                                    setDescription("");
+                                    setPrice("");
+                                    setCurrency("RON");
+                                    setImage(null);
+                                    setCategory("");
+                                    setInstructor("");
+                                    setLanguage("ro");
                                 }).catch((error) => {
                                     console.error("Error updating document: ", error);
                                 });
                             });
                         }
                     );
+                } else {
+                    setSaveButtonText("Save course");
+                    handleClose();
+                    setTitle("");
+                    setDescription("");
+                    setPrice("");
+                    setCurrency("RON");
+                    setImage(null);
+                    setCategory("");
+                    setInstructor("");
+                    setLanguage("ro");
                 }
-                setSaveButtonText("Save course");
-                handleClose();
-                setTitle("");
-                setDescription("");
-                setPrice("");
-                setCurrency("RON");
-                setImage(null);
-                setCategory("");
-                setInstructor("");
 
             })
             .catch((error) => {
@@ -105,15 +119,15 @@ const AddCoursesModal = (props) => {
 
 
     return (
-        <>
-            <div id="add-course-modal" tabIndex="-1" aria-hidden="true" className={`${open ? 'flex' : 'hidden'} overflow-y-auto overflow-x-hidden mx-auto sm:w-full md:w-full fixed inset-0 items-center justify-center z-30 p-4 w-full md:inset-0 h-modal md:h-full`}>
-                <div className="relative flex justify-center items-center w-full max-w-md h-full md:h-auto">
-                    <div className="w-full relative bg-white rounded-lg shadow dark:bg-gray-700">
+        <div className={`${open ? 'flex' : 'hidden'} absolute w-full top-10`}>
+            <div id="add-course-modal" tabIndex="-1" aria-hidden="true" className={`${open ? 'flex' : 'hidden'} overflow-y-visible overflow-x-hidden mx-auto sm:w-full md:w-full flex items-center justify-center z-30 p-4 w-full h-full`}>
+                <div className="relative flex justify-center items-center w-full max-w-md">
+                    <div className="w-full h-full relative bg-white rounded-lg shadow dark:bg-gray-700">
                         <button type="button" className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white" data-modal-toggle="authentication-modal" onClick={handleClose}>
                             <svg aria-hidden="true" className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"></path></svg>
                             <span className="sr-only">{t.contactModal.close}</span>
                         </button>
-                        <div className="pt-4">
+                        <div className="pt-4 h-full">
                             <h2 className="text-center text-2xl font-semibold text-gray-700 dark:text-gray-200 pb-2">Add new course</h2>
                             <div className="py-0 px-6 lg:px-8 w-full">
                                 <div className="mb-6 w-full">
@@ -125,6 +139,40 @@ const AddCoursesModal = (props) => {
                                 <div className="mb-6 w-full">
                                     <label htmlFor="base-input" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
                                     <textarea id="message" rows="4" className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your description here..." value={description} onChange={(e) => setDescription(e.target.value)}></textarea>
+                                </div>
+                            </div>
+                            <div className="py-0 px-6 lg:px-8 w-full">
+                                <div className="mb-6 w-full">
+                                    <label htmlFor="base-input" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Instructor</label>
+                                    <input type="text" id="base-input" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Instructor name" value={instructor} onChange={(e) => setInstructor(e.target.value)} />
+                                </div>
+                            </div>
+                            <div className="py-0 px-6 lg:px-8 w-full">
+                                <div className="mb-6 w-full">
+                                    <label htmlFor="base-input" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Language</label>
+                                    <select className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value={language} onChange={(e) => setLanguage(e.target.value)}>
+                                        <option value="English">English</option>
+                                        <option value="Romanian">Romanian</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div className="py-0 px-6 lg:px-8 w-full">
+                                <div className="mb-6 w-full">
+                                    <label htmlFor="base-input" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label>
+                                    <select className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value={category} onChange={(e) => setCategory(e.target.value)}>
+                                        <option value="Web Development">Web Development</option>
+                                        <option value="Mobile Development">Mobile Development</option>
+                                        <option value="Data Science">Data Science</option>
+                                        <option value="Design">Design</option>
+                                        <option value="Business">Business</option>
+                                        <option value="Marketing">Marketing</option>
+                                        <option value="Photography">Photography</option>
+                                        <option value="Music">Music</option>
+                                        <option value="Lifestyle">Lifestyle</option>
+                                        <option value="Health & Fitness">Health & Fitness</option>
+                                        <option value="Language">Language</option>
+                                        <option value="Other">Other</option>
+                                    </select>
                                 </div>
                             </div>
                             <div className="py-0 px-6 lg:px-8 w-full">
@@ -161,7 +209,7 @@ const AddCoursesModal = (props) => {
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     );
 }
 

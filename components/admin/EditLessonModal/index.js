@@ -41,7 +41,7 @@ const EditLessonModal = (props) => {
             description: description,
             lessonContent: lessonContent,
             isFree: isFree,
-            createdAt: new Date(),
+            lastUpdate: new Date(),
         };
 
         setDoc(doc(db, `courses/${props.courseId}/lessons/`, lessonId), lesson, { merge: true })
@@ -70,25 +70,31 @@ const EditLessonModal = (props) => {
                 () => {
                     getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
                         console.log('File available at', downloadURL);
-                        setDoc(doc(db, `courses/${props.courseId}/lessons`, docRef.id), { video: downloadURL }, { merge: true }).then(() => {
+                        setDoc(doc(db, `courses/${props.courseId}/lessons`, lessonId), { video: downloadURL }, { merge: true }).then(() => {
                             console.log("Document successfully updated!");
                             setSaveButtonText("Save lesson");
                             handleClose();
+                            setTitle("");
+                            setDescription("");
+                            setLessonContent("");
+                            setVideo(null);
+                            setIsFree(false);
                         }).catch((error) => {
                             console.error("Error updating document: ", error);
                         });
                     });
                 }
             );
+        } else {
+            setSaveButtonText("Save lesson");
+            handleClose();
+            setTitle("");
+            setDescription("");
+            setLessonContent("");
+            setVideo(null);
+            setIsFree(false);
         }
-        setSaveButtonText("Save lesson");
-        handleClose();
-        setTitle("");
-        setDescription("");
-        setLessonContent("");
-        setVideo(null);
-        setIsFree(false);
-        
+
     };
 
     React.useEffect(() => {
@@ -114,8 +120,8 @@ const EditLessonModal = (props) => {
 
 
     return (
-        <>
-            <div id="add-course-modal" tabIndex="-1" aria-hidden="true" className={`${open ? 'flex' : 'hidden'} overflow-y-auto overflow-x-hidden mx-auto sm:w-full md:w-full fixed inset-0 items-center justify-center z-30 p-4 w-full md:inset-0 h-modal md:h-full max-h-screen`}>
+        <div className={`${open ? 'flex' : 'hidden'} absolute w-full top-10`}>
+            <div id="add-course-modal" tabIndex="-1" aria-hidden="true" className={`${open ? 'flex' : 'hidden'} overflow-y-visible overflow-x-hidden mx-auto sm:w-full md:w-full flex items-center justify-center z-30 p-4 w-full h-full`}>
                 <div className="relative flex justify-center items-center w-full max-w-md h-full md:h-auto">
                     <div className="w-full relative bg-white rounded-lg shadow dark:bg-gray-700">
                         <button type="button" className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white" data-modal-toggle="authentication-modal" onClick={handleClose}>
@@ -170,7 +176,7 @@ const EditLessonModal = (props) => {
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     );
 }
 

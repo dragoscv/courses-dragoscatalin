@@ -72,6 +72,20 @@ const AddLessonModal = (props) => {
                                 console.log('File available at', downloadURL);
                                 setDoc(doc(db, `courses/${props.courseId}/lessons`, docRef.id), { video: downloadURL }, { merge: true }).then(() => {
                                     console.log("Document successfully updated!");
+                                    //update course last update
+                                    setDoc(doc(db, `courses`, props.courseId), { lastUpdate: new Date() }, { merge: true }).then(() => {
+                                        console.log("Document successfully updated!");
+                                    }).catch((error) => {
+                                        console.error("Error updating document: ", error);
+                                    });
+
+                                    setSaveButtonText("Save lesson");
+                                    handleClose();
+                                    setTitle("");
+                                    setDescription("");
+                                    setLessonContent("");
+                                    setVideo(null);
+                                    setIsFree(false);
                                 }).catch((error) => {
                                     console.error("Error updating document: ", error);
                                 });
@@ -79,14 +93,24 @@ const AddLessonModal = (props) => {
                         }
                     );
                 }
-                setSaveButtonText("Save lesson");
-                handleClose();
-                setTitle("");
-                setDescription("");
-                setLessonContent("");
-                setVideo(null);
-                setIsFree(false);
-                
+                else {
+
+                    //update course last update
+                    setDoc(doc(db, `courses`, props.courseId), { lastUpdate: new Date() }, { merge: true }).then(() => {
+                        console.log("Document successfully updated!");
+                    }).catch((error) => {
+                        console.error("Error updating document: ", error);
+                    });
+
+                    setSaveButtonText("Save lesson");
+                    handleClose();
+                    setTitle("");
+                    setDescription("");
+                    setLessonContent("");
+                    setVideo(null);
+                    setIsFree(false);
+                }
+
             })
             .catch((error) => {
                 console.error("Error adding document: ", error);
@@ -100,8 +124,8 @@ const AddLessonModal = (props) => {
 
 
     return (
-        <>
-            <div id="add-course-modal" tabIndex="-1" aria-hidden="true" className={`${open ? 'flex' : 'hidden'} overflow-y-auto overflow-x-hidden mx-auto sm:w-full md:w-full fixed inset-0 items-center justify-center z-30 p-4 w-full md:inset-0 h-modal md:h-full`}>
+        <div className={`${open ? 'flex' : 'hidden'} absolute w-full top-10`}>
+            <div id="add-course-modal" tabIndex="-1" aria-hidden="true" className={`${open ? 'flex' : 'hidden'} overflow-y-visible overflow-x-hidden mx-auto sm:w-full md:w-full flex items-center justify-center z-30 p-4 w-full h-full`}>
                 <div className="relative flex justify-center items-center w-full max-w-md h-full md:h-auto">
                     <div className="w-full relative bg-white rounded-lg shadow dark:bg-gray-700">
                         <button type="button" className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white" data-modal-toggle="authentication-modal" onClick={handleClose}>
@@ -155,7 +179,7 @@ const AddLessonModal = (props) => {
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     );
 }
 

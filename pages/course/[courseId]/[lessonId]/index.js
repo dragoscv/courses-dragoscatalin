@@ -19,7 +19,7 @@ const Course = (props) => {
                 </ul>
             </div>
             <div id="defaultTabContent" className='w-full px-4'>
-                <div className={`${currentTab === 'lessons' ? 'flex' : 'hidden'} p-4 bg-white rounded-lg md:p-8 dark:bg-gray-800`} id="lessons" role="tabpanel" aria-labelledby="lessons-tab">
+                <div className={`${currentTab === 'lessons' ? 'flex' : 'hidden'} `} id="lessons" role="tabpanel" aria-labelledby="lessons-tab">
                     <Lesson />
                 </div>
                 <div className={`${currentTab === 'comments' ? 'flex' : 'hidden'} w-full p-4 bg-white rounded-lg md:p-8 dark:bg-gray-800`} id="reviews" role="tabpanel" aria-labelledby="reviews-tab">

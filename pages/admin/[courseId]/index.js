@@ -1,6 +1,6 @@
 import React from 'react'
 import Router, { useRouter } from 'next/router'
-import { getFirestore, addDoc, setDoc, doc, collection, getDoc, getDocs, query, onSnapshot, deleteDoc } from "firebase/firestore";
+import { getFirestore, addDoc, setDoc, doc, collection, getDoc, getDocs, query, onSnapshot, deleteDoc, orderBy } from "firebase/firestore";
 import { app } from '../../../firebase.config';
 import AddLessonModal from '../../../components/admin/AddLessonModal'
 import EditLessonModal from '../../../components/admin/EditLessonModal'
@@ -37,7 +37,7 @@ const Course = () => {
     React.useEffect(() => {
         if (!courseId) return
         const lessons = []
-        const q = query(collection(db, `courses/${courseId}/lessons`))
+        const q = query(collection(db, `courses/${courseId}/lessons`), orderBy('createdAt', 'asc'))
         onSnapshot(q, (querySnapshot) => {
             lessons.length = 0
             querySnapshot.forEach((doc) => {

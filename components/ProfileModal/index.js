@@ -61,7 +61,7 @@ const ProfileModal = (props) => {
                 data.courseId = doc.id;
                 courses[data.courseId] = data;
             });
-            console.log(courses)
+            // console.log(courses)
             setCourses(courses);
         });
     }, []);

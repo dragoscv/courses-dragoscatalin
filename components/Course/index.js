@@ -79,9 +79,14 @@ const Lessons = (props) => {
 
 
     return (
-        <>
-
-            <div className="grid grid-cols-2 gap-6 sm:grid-cols-2 lg:grid-cols-6">
+        <div className='flex flex-col w-full'>
+            <div id='course-title' className="flex flex-col items-center justify-center p-4 mb-4 space-y-4 bg-white rounded-lg shadow-lg dark:bg-gray-700 transition-all hover:scale-105">
+                <div className="flex flex-col items-center justify-center space-y-1">
+                    <p className="text-xl font-semibold text-gray-700 dark:text-gray-200">{course && course.title}</p>
+                    <p className="text-sm font-medium text-gray-500 dark:text-gray-400">{course && course.description}</p>
+                </div>
+            </div>
+            <div className="grid grid-cols-2 gap-6 sm:grid-cols-2 lg:grid-cols-6 p-4 bg-white rounded-lg md:p-8 dark:bg-gray-800 w-full">
                 {lessons.map((lesson) => (
                     <div key={lesson.id} className="relative flex flex-col items-center justify-center p-6 space-y-4 bg-white rounded-lg shadow-lg dark:bg-gray-700 transition-all hover:scale-105">
                         <div className="flex flex-col items-center justify-center space-y-1">
@@ -121,7 +126,7 @@ const Lessons = (props) => {
                 ))}
             </div>
             <BuyCourseModal open={buyCourseModal} onClose={toggleBuyCourseModal} course={course} />
-        </>
+        </div>
     )
 }
 
