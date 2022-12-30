@@ -14,11 +14,11 @@ const AddCoursesModal = (props) => {
     const [title, setTitle] = React.useState("");
     const [description, setDescription] = React.useState("");
     const [price, setPrice] = React.useState("");
-    const [currency, setCurrency] = React.useState("RON");
+    const [currency, setCurrency] = React.useState("EUR");
     const [image, setImage] = React.useState(null);
-    const [category, setCategory] = React.useState("");
+    const [category, setCategory] = React.useState("Web Development");
     const [instructor, setInstructor] = React.useState("");
-    const [language, setLanguage] = React.useState("ro");
+    const [language, setLanguage] = React.useState("Romanian");
 
     const router = useRouter()
     const { locale, locales, defaultLocale } = router

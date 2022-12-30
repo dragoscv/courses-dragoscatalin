@@ -17,8 +17,8 @@ export default function Courses() {
       const courses = [];
       const queryCourses = await getDocs(collection(db, "courses"));
       const queryTransactions = await getDocs(collection(db, "transactions"));
-      
-      for(const course of queryCourses.docs) {
+
+      for (const course of queryCourses.docs) {
         const data = course.data();
         data.id = course.id;
         const studentsCount = queryTransactions.docs.filter((transaction) => transaction.data().courseId === data.id).length;
@@ -58,6 +58,9 @@ export default function Courses() {
                 </h4>
                 <p className="text-sm text-gray-600 dark:text-gray-400">
                   {course.description}
+                </p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                 Categorie: {course.category}
                 </p>
                 <p className="text-sm text-gray-600 dark:text-gray-400">
                   {course.studentsCount} studenti
