@@ -122,7 +122,7 @@ const EditLessonModal = (props) => {
     return (
         <div className={`${open ? 'flex' : 'hidden'} absolute w-full top-10`}>
             <div id="add-course-modal" tabIndex="-1" aria-hidden="true" className={`${open ? 'flex' : 'hidden'} overflow-y-visible overflow-x-hidden mx-auto sm:w-full md:w-full flex items-center justify-center z-30 p-4 w-full h-full`}>
-                <div className="relative flex justify-center items-center w-full max-w-md h-full md:h-auto">
+                <div className="relative flex justify-center items-center w-3/4 h-full md:h-auto">
                     <div className="w-full relative bg-white rounded-lg shadow dark:bg-gray-700">
                         <button type="button" className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white" data-modal-toggle="authentication-modal" onClick={handleClose}>
                             <svg aria-hidden="true" className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"></path></svg>

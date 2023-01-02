@@ -4,6 +4,7 @@ import { translations } from "../../../languages";
 import { getFirestore, addDoc, setDoc, doc, collection, getDoc, getDocs } from "firebase/firestore";
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { app } from "../../../firebase.config";
+import { DefaultEditor } from 'react-simple-wysiwyg';
 
 const db = getFirestore(app);
 const storage = getStorage(app);
@@ -139,7 +140,7 @@ const EditCourseModal = (props) => {
     return (
         <div className={`${open ? 'flex' : 'hidden'} absolute w-full top-10`}>
             <div id="add-course-modal" tabIndex="-1" aria-hidden="true" className={`${open ? 'flex' : 'hidden'} overflow-y-visible overflow-x-hidden mx-auto sm:w-full md:w-full flex items-center justify-center z-30 p-4 w-full h-full`}>
-                <div className="relative flex justify-center items-center w-full max-w-md h-full md:h-auto">
+                <div className="relative flex justify-center items-center w-3/4 h-full md:h-auto">
                     <div className="w-full relative bg-white rounded-lg shadow dark:bg-gray-700">
                         <button type="button" className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white" data-modal-toggle="authentication-modal" onClick={handleClose}>
                             <svg aria-hidden="true" className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"></path></svg>
@@ -156,7 +157,8 @@ const EditCourseModal = (props) => {
                             <div className="py-0 px-6 lg:px-8 w-full">
                                 <div className="mb-6 w-full">
                                     <label htmlFor="base-input" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
-                                    <textarea id="message" rows="4" className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your description here..." value={description} onChange={(e) => setDescription(e.target.value)}></textarea>
+                                    
+                                    <DefaultEditor value={description} onChange={(e) => setDescription(e.target.value)} />
                                 </div>
                             </div>
                             <div className="py-0 px-6 lg:px-8 w-full">

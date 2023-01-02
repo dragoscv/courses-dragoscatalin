@@ -85,7 +85,7 @@ const Admin = () => {
                                 {course.title}
                             </h4>
                             <p className="text-sm text-gray-600 dark:text-gray-400">
-                                {course.description}
+                            <div id="lesson-content" dangerouslySetInnerHTML={{ __html: course.description.length > 100 ? course.description.substring(0, 100) + '...' : course.description }}></div>
                             </p>
                             <button className="absolute top-0 right-0 p-2 m-2 text-gray-400 bg-white rounded-full shadow-sm hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-gray-800 dark:focus:ring-white"
                                 onClick={() => {

@@ -57,10 +57,10 @@ export default function Courses() {
                   {course.title}
                 </h4>
                 <p className="text-sm text-gray-600 dark:text-gray-400">
-                  {course.description}
+                  <div id="lesson-content" dangerouslySetInnerHTML={{ __html: course.description.length > 100 ? course.description.substring(0, 100) + '...' : course.description }}></div>
                 </p>
                 <p className="text-sm text-gray-600 dark:text-gray-400">
-                 Categorie: {course.category}
+                  Categorie: {course.category}
                 </p>
                 <p className="text-sm text-gray-600 dark:text-gray-400">
                   {course.studentsCount} studenti
