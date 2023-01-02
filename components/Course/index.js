@@ -99,7 +99,7 @@ const Lessons = (props) => {
                     <div key={lesson.id} className="relative flex flex-col items-center justify-center p-6 space-y-4 bg-white rounded-lg shadow-lg dark:bg-gray-700 transition-all hover:scale-105">
                         <div className="flex flex-col items-center justify-center space-y-1">
                             {lesson.isFree && (
-                                <span className="absolute top-0 right-0 px-2 py-1 text-xs font-semibold text-white bg-green-500 rounded-sm transform ">Free</span>
+                                <span className="absolute top-0 right-0 px-2 py-1 text-xs font-semibold text-white bg-green-500 rounded-sm transform ">Gratuit</span>
                             )}
                             <p className="text-xl font-semibold text-gray-700 dark:text-gray-200">{lesson.title}</p>
                             <p className="text-sm font-medium text-gray-500 dark:text-gray-400">{lesson.description}</p>
@@ -109,7 +109,7 @@ const Lessons = (props) => {
                                     onClick={() => Router.push(`/course/${courseId}/${lesson.id}`)}
                                 >
                                     <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-                                        View Lesson
+                                        Vezi Lecția
                                     </span>
                                 </button>
                             ) : userData && userData.courses && userData.courses.includes(courseId) ? (
@@ -117,7 +117,7 @@ const Lessons = (props) => {
                                     onClick={() => Router.push(`/course/${courseId}/${lesson.id}`)}
                                 >
                                     <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-                                        View Lesson
+                                       Vezi Lecția
                                     </span>
                                 </button>
                             ) : (
@@ -125,7 +125,7 @@ const Lessons = (props) => {
                                     onClick={buyCourse}
                                 >
                                     <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-                                        Buy Course
+                                        Cumpără Cursul
                                     </span>
                                 </button>
                             )}
