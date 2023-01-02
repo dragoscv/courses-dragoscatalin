@@ -5,6 +5,7 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { app } from '../../firebase.config';
 import moment from 'moment/moment';
 import BuyCourseModal from '../BuyCourseModal';
+import Head from 'next/head';
 
 const auth = getAuth(app)
 const db = getFirestore(app)
@@ -80,6 +81,9 @@ const Lessons = (props) => {
 
     return (
         <div className='flex flex-col w-full'>
+            <Head>
+            <title>{course && course.title}</title>
+        </Head>
             <div id='course-title' className="flex flex-col items-center justify-center p-4 mb-4 space-y-4 bg-white rounded-lg shadow-lg dark:bg-gray-700 transition-all">
                 <div className="flex flex-col items-center justify-center space-y-1">
                     <p className="text-xl font-semibold text-gray-700 dark:text-gray-200">{course && course.title}</p>

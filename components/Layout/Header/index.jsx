@@ -131,7 +131,7 @@ const Header = () => {
     return (
         <>
 
-            <nav className="p-2 w-full top-0 left-0 z-40">
+            <nav className="p-2 w-full top-0 left-0 z-40 bg-black">
                 <div className="relative container flex flex-wrap items-center justify-between mx-auto">
                     {(courseId || lessonId) &&
                         <>

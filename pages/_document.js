@@ -4,10 +4,12 @@ class MyDocument extends Document {
     render() {
         return (
             <Html
-            className="scroll-smooth dark" 
+                className="scroll-smooth dark"
             // style={{ scrollBehavior: 'smooth' }}
             >
-                <Head />
+                <Head>
+                    <link rel="icon" href="/assets/logo/logo-daam-white.svg" />
+                </Head>
                 <body>
                     <Main />
                     <NextScript />

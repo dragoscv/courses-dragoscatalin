@@ -4,6 +4,7 @@ import { getFirestore, addDoc, setDoc, doc, collection, getDoc, getDocs, query, 
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { app } from '../../../firebase.config';
 import moment from 'moment/moment';
+import Head from 'next/head';
 
 const db = getFirestore(app)
 const auth = getAuth(app)
@@ -125,6 +126,9 @@ const Lesson = () => {
 
     return (
         <div className='p-4 bg-white rounded-lg md:p-8 dark:bg-gray-800 w-full'>
+            <Head>
+                <title>{lesson && lesson.title}</title>
+            </Head>
             <div className='flex flex-col justify-center items-center w-full'>
                 {lesson && (
                     <>

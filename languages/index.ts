@@ -42,7 +42,7 @@ export const translations = {
         contactModal: {
             title: 'Contact us',
             close: 'Close',
-            content: 'If you have any questions, you can find my information cotact on',
+            content: 'If you have any questions, you can find my information contact on',
         },
     },
     'ro': {
